@@ -1,0 +1,20 @@
+[package]
+name = "forge-yaml"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+forge-core = { path = "../forge-core" }
+serde.workspace = true
+serde_json.workspace = true
+serde-saphyr.workspace = true
+glaucus-cst.workspace = true
+glaucus-core.workspace = true
+uuid.workspace = true
+thiserror.workspace = true
+similar.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
