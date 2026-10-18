@@ -2,19 +2,14 @@ use crate::id::EntityId;
 use chrono::{DateTime, NaiveDate, Utc};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum MilestoneStatus {
+    #[default]
     Planned,
     InProgress,
     Completed,
     Missed,
-}
-
-impl Default for MilestoneStatus {
-    fn default() -> Self {
-        Self::Planned
-    }
 }
 
 /// A Milestone entity stored canonically in `milestones/<slug>.yaml`.

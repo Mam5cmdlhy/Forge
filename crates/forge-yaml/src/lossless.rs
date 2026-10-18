@@ -45,14 +45,14 @@ impl LosslessYamlDoc {
             glaucus_cst::SetError::NotAMapping => LosslessError::NotAMapping,
         })
     }
+}
 
-    /// Emits the document text, restoring the UTF-8 BOM if the input originally had one.
-    pub fn to_string(&self) -> String {
-        let text = self.inner.to_string();
+impl std::fmt::Display for LosslessYamlDoc {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if self.has_bom {
-            format!("\u{FEFF}{text}")
+            write!(f, "\u{FEFF}{}", self.inner)
         } else {
-            text
+            write!(f, "{}", self.inner)
         }
     }
 }

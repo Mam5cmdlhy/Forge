@@ -114,8 +114,14 @@ fn test_cli_end_to_end_workflow() {
         updated_content, expected_content,
         "CLI task status update must losslessly preserve all comments, blank lines, indentation, CRLF, and BOM!"
     );
-    assert!(updated_content.starts_with('\u{FEFF}'), "BOM must survive CLI edit");
-    assert!(updated_content.contains("\r\n"), "CRLF must survive CLI edit");
+    assert!(
+        updated_content.starts_with('\u{FEFF}'),
+        "BOM must survive CLI edit"
+    );
+    assert!(
+        updated_content.contains("\r\n"),
+        "CRLF must survive CLI edit"
+    );
 
     // 7. Test SQLite index rebuildability: delete forge.db and rebuild
     let db_path = project_dir.join(".forge/forge.db");
@@ -128,9 +134,14 @@ fn test_cli_end_to_end_workflow() {
         .arg("rebuild-index")
         .assert()
         .success()
-        .stdout(predicate::str::contains("Successfully rebuilt SQLite index"));
+        .stdout(predicate::str::contains(
+            "Successfully rebuilt SQLite index",
+        ));
 
-    assert!(db_path.exists(), "forge.db has been completely rebuilt from YAML files");
+    assert!(
+        db_path.exists(),
+        "forge.db has been completely rebuilt from YAML files"
+    );
 
     // Verify task list works again from rebuilt database
     let mut cmd = Command::cargo_bin("forge").unwrap();

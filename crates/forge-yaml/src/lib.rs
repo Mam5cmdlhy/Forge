@@ -122,7 +122,6 @@ pub fn write_milestone_file(path: impl AsRef<Path>, milestone: &Milestone) -> Re
     Ok(())
 }
 
-
 /// Writes data to a temporary file in the same directory and atomically renames it.
 /// Prevents partial writes or file corruption on crash.
 pub fn write_atomic(path: &Path, content: &str) -> Result<()> {
@@ -131,9 +130,7 @@ pub fn write_atomic(path: &Path, content: &str) -> Result<()> {
 
     let tmp_path = parent.join(format!(
         ".{}.tmp.{}",
-        path.file_name()
-            .and_then(|f| f.to_str())
-            .unwrap_or("forge"),
+        path.file_name().and_then(|f| f.to_str()).unwrap_or("forge"),
         uuid::Uuid::now_v7()
     ));
 
@@ -199,7 +196,10 @@ estimate:
 
         let updated = fs::read_to_string(temp.path()).unwrap();
         let expected = REPRESENTATIVE_FIXTURE.replace("status: todo", "status: in_progress");
-        assert_eq!(updated, expected, "All comments, blank lines, and unusual formatting outside status must be 100% preserved");
+        assert_eq!(
+            updated, expected,
+            "All comments, blank lines, and unusual formatting outside status must be 100% preserved"
+        );
     }
 
     #[test]
@@ -215,9 +215,15 @@ estimate:
         let updated = fs::read_to_string(temp.path()).unwrap();
         let expected = crlf_fixture.replace("status: todo", "status: in_progress");
 
-        assert_eq!(updated, expected, "CRLF line endings and formatting must survive the edit");
+        assert_eq!(
+            updated, expected,
+            "CRLF line endings and formatting must survive the edit"
+        );
         assert!(updated.contains("\r\n"), "Must retain CRLF");
-        assert!(!updated.contains("\r\r\n"), "Must not create corrupted double CR");
+        assert!(
+            !updated.contains("\r\r\n"),
+            "Must not create corrupted double CR"
+        );
     }
 
     #[test]

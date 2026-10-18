@@ -3,21 +3,16 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum ProjectStatus {
     Inception,
     Planning,
+    #[default]
     Active,
     OnHold,
     Completed,
     Archived,
-}
-
-impl Default for ProjectStatus {
-    fn default() -> Self {
-        Self::Active
-    }
 }
 
 /// The root project definition stored in `forge.yaml`.

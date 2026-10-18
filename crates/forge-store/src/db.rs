@@ -125,6 +125,7 @@ impl SqliteIndex {
     }
 
     /// Upserts an entity in the index.
+    #[allow(clippy::too_many_arguments)]
     pub fn upsert_entity(
         &self,
         id: EntityId,

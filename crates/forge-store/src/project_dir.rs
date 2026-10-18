@@ -41,7 +41,9 @@ impl ProjectPaths {
 
     /// Finds a project root starting from `start_dir` and walking upwards.
     pub fn find_root(start_dir: &Path) -> Result<PathBuf> {
-        let mut curr = start_dir.canonicalize().unwrap_or_else(|_| start_dir.to_path_buf());
+        let mut curr = start_dir
+            .canonicalize()
+            .unwrap_or_else(|_| start_dir.to_path_buf());
         loop {
             if curr.join("forge.yaml").is_file() {
                 return Ok(curr);

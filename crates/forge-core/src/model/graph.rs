@@ -105,11 +105,11 @@ impl RelationshipGraph {
             if current == from {
                 return true;
             }
-            if visited.insert(current) {
-                if let Some(deps) = self.dependencies.get(&current) {
-                    for &next_dep in deps {
-                        queue.push(next_dep);
-                    }
+            if visited.insert(current)
+                && let Some(deps) = self.dependencies.get(&current)
+            {
+                for &next_dep in deps {
+                    queue.push(next_dep);
                 }
             }
         }

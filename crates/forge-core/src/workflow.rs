@@ -9,9 +9,18 @@ pub fn validate_task_transition(from: TaskStatus, to: TaskStatus) -> Result<()> 
 
     let valid = match from {
         TaskStatus::Backlog => matches!(to, TaskStatus::Todo | TaskStatus::Cancelled),
-        TaskStatus::Todo => matches!(to, TaskStatus::InProgress | TaskStatus::Cancelled | TaskStatus::Backlog),
-        TaskStatus::InProgress => matches!(to, TaskStatus::InReview | TaskStatus::Todo | TaskStatus::Cancelled),
-        TaskStatus::InReview => matches!(to, TaskStatus::Done | TaskStatus::InProgress | TaskStatus::Cancelled),
+        TaskStatus::Todo => matches!(
+            to,
+            TaskStatus::InProgress | TaskStatus::Cancelled | TaskStatus::Backlog
+        ),
+        TaskStatus::InProgress => matches!(
+            to,
+            TaskStatus::InReview | TaskStatus::Todo | TaskStatus::Cancelled
+        ),
+        TaskStatus::InReview => matches!(
+            to,
+            TaskStatus::Done | TaskStatus::InProgress | TaskStatus::Cancelled
+        ),
         TaskStatus::Done => matches!(to, TaskStatus::InProgress | TaskStatus::Backlog),
         TaskStatus::Cancelled => matches!(to, TaskStatus::Backlog | TaskStatus::Todo),
     };

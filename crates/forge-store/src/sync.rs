@@ -52,7 +52,10 @@ pub fn rebuild_index(project_root: &Path) -> Result<RebuildStats> {
         for entry in fs::read_dir(paths.milestones_dir())? {
             let entry = entry?;
             let path = entry.path();
-            if path.extension().map_or(false, |ext| ext == "yaml" || ext == "yml") {
+            if path
+                .extension()
+                .is_some_and(|ext| ext == "yaml" || ext == "yml")
+            {
                 match read_milestone_file(&path) {
                     Ok(milestone) => {
                         let rel_path = path
@@ -73,7 +76,10 @@ pub fn rebuild_index(project_root: &Path) -> Result<RebuildStats> {
                         stats.milestones_indexed += 1;
                     }
                     Err(e) => {
-                        eprintln!("Warning: Skipping invalid milestone {}: {e}", path.display());
+                        eprintln!(
+                            "Warning: Skipping invalid milestone {}: {e}",
+                            path.display()
+                        );
                     }
                 }
             }
@@ -85,7 +91,10 @@ pub fn rebuild_index(project_root: &Path) -> Result<RebuildStats> {
         for entry in fs::read_dir(paths.tasks_dir())? {
             let entry = entry?;
             let path = entry.path();
-            if path.extension().map_or(false, |ext| ext == "yaml" || ext == "yml") {
+            if path
+                .extension()
+                .is_some_and(|ext| ext == "yaml" || ext == "yml")
+            {
                 match read_task_file(&path) {
                     Ok(task) => {
                         let rel_path = path
@@ -143,7 +152,13 @@ mod tests {
         let project_dir = temp_dir.path();
 
         // 1. Initialize project
-        let _project = init_project(project_dir, "Test Rebuild", "Testing rebuild index", "Tester").unwrap();
+        let _project = init_project(
+            project_dir,
+            "Test Rebuild",
+            "Testing rebuild index",
+            "Tester",
+        )
+        .unwrap();
 
         // 2. Add two tasks to tasks/
         let paths = ProjectPaths::new(project_dir);
@@ -179,6 +194,10 @@ mod tests {
         // Check durable audit log is intact outside SQLite
         let audit = DurableAuditLog::new(paths.audit_log_path());
         let entries = audit.read_all().unwrap();
-        assert!(entries.iter().any(|e| e.action == AuditAction::RebuiltIndex));
+        assert!(
+            entries
+                .iter()
+                .any(|e| e.action == AuditAction::RebuiltIndex)
+        );
     }
 }

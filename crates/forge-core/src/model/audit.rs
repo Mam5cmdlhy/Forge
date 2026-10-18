@@ -2,18 +2,13 @@ use crate::id::EntityId;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum ActorType {
+    #[default]
     Human,
     AiAgent,
     System,
-}
-
-impl Default for ActorType {
-    fn default() -> Self {
-        Self::Human
-    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

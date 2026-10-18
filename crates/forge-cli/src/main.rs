@@ -120,8 +120,8 @@ fn run(cli: Cli) -> Result<(), String> {
             name,
             description,
         } => {
-            let project = init_project(&path, &name, &description, "User")
-                .map_err(|e| e.to_string())?;
+            let project =
+                init_project(&path, &name, &description, "User").map_err(|e| e.to_string())?;
             match cli.format {
                 Format::Text => {
                     println!("Initialized empty Forge project in {}", path.display());
@@ -162,11 +162,16 @@ fn run(cli: Cli) -> Result<(), String> {
                     match cli.format {
                         Format::Text => {
                             println!("Project validation PASSED.");
-                            println!("Indexed {} tasks, {} milestones, {} dependencies.",
-                                stats.tasks_indexed, stats.milestones_indexed, stats.dependencies_indexed);
+                            println!(
+                                "Indexed {} tasks, {} milestones, {} dependencies.",
+                                stats.tasks_indexed,
+                                stats.milestones_indexed,
+                                stats.dependencies_indexed
+                            );
                         }
                         Format::Json => {
-                            let json = serde_json::to_string_pretty(&stats).map_err(|e| e.to_string())?;
+                            let json =
+                                serde_json::to_string_pretty(&stats).map_err(|e| e.to_string())?;
                             println!("{json}");
                         }
                     }
@@ -208,16 +213,20 @@ fn run(cli: Cli) -> Result<(), String> {
                             if tasks.is_empty() {
                                 println!("No tasks found.");
                             } else {
-                                println!("{:<10} {:<14} {:<8} {}", "ID", "STATUS", "PRIORITY", "TITLE");
+                                println!("{:<10} {:<14} {:<8} TITLE", "ID", "STATUS", "PRIORITY");
                                 for t in &tasks {
                                     let short_id = if t.id.len() >= 8 { &t.id[..8] } else { &t.id };
                                     let prio = t.priority.as_deref().unwrap_or("-");
-                                    println!("{:<10} {:<14} {:<8} {}", short_id, t.status, prio, t.title);
+                                    println!(
+                                        "{:<10} {:<14} {:<8} {}",
+                                        short_id, t.status, prio, t.title
+                                    );
                                 }
                             }
                         }
                         Format::Json => {
-                            let json = serde_json::to_string_pretty(&tasks).map_err(|e| e.to_string())?;
+                            let json =
+                                serde_json::to_string_pretty(&tasks).map_err(|e| e.to_string())?;
                             println!("{json}");
                         }
                     }
@@ -243,7 +252,8 @@ fn run(cli: Cli) -> Result<(), String> {
                         .chars()
                         .map(|c| if c.is_alphanumeric() { c } else { '-' })
                         .collect();
-                    let file_name = format!("{}-{}.yaml", slug.trim_matches('-'), task.id.short_id());
+                    let file_name =
+                        format!("{}-{}.yaml", slug.trim_matches('-'), task.id.short_id());
                     let file_path = paths.tasks_dir().join(&file_name);
 
                     write_task_file(&file_path, &task).map_err(|e| e.to_string())?;
@@ -277,10 +287,15 @@ fn run(cli: Cli) -> Result<(), String> {
 
                     match cli.format {
                         Format::Text => {
-                            println!("Created task {} in {}", task.id.short_id(), file_path.display());
+                            println!(
+                                "Created task {} in {}",
+                                task.id.short_id(),
+                                file_path.display()
+                            );
                         }
                         Format::Json => {
-                            let json = serde_json::to_string_pretty(&task).map_err(|e| e.to_string())?;
+                            let json =
+                                serde_json::to_string_pretty(&task).map_err(|e| e.to_string())?;
                             println!("{json}");
                         }
                     }
